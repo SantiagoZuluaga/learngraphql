@@ -1,8 +1,23 @@
 const { gql } = require("apollo-server-express");
 
 const typeDefs = gql`
+  type Company {
+    id: ID
+    name: String
+    country: String
+    state: String
+    city: String
+  }
+
   type User {
-    id: String
+    id: ID
+    name: String
+    email: String
+    company: Company
+    role: String
+  }
+
+  input UserInput {
     name: String
     email: String
     company: String
@@ -10,16 +25,23 @@ const typeDefs = gql`
   }
 
   type Query {
-    create(
-      name: String!
-      email: String!
-      company: String!
-      role: String!
-    ): User
-    find: [User]
-    findOne(
-      id: String
+    users: [User]
+    user(
+      id: ID!
       ): User
+  }
+  
+  type Mutation {
+    createUser(
+      input: UserInput
+    ): User
+    updateUser(
+      id: ID!
+      input: UserInput
+    ): User
+    deleteUser(
+      id: ID!
+    ) : Boolean
   }
 `;
 
